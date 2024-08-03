@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Contains the class DBStorage
+Contains the class DBStorage.
 """
 
 import models
@@ -28,7 +28,7 @@ classes = {
 
 class DBStorage:
     """Interacts with the MySQL database."""
-    
+
     __engine = None
     __session = None
 
@@ -39,7 +39,7 @@ class DBStorage:
         HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
-        
+
         self.__engine = create_engine(
             f'mysql+mysqldb://{HBNB_MYSQL_USER}:{HBNB_MYSQL_PWD}@{HBNB_MYSQL_HOST}/{HBNB_MYSQL_DB}'
         )
