@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Contains the FileStorage class
+Contains the FileStorage class.
 """
 
 import json
@@ -24,7 +24,7 @@ classes = {
 
 
 class FileStorage:
-    """Serializes instances to a JSON file & deserializes back to instances."""
+    """Serializes instances to a JSON file and deserializes back to instances."""
 
     __file_path = "file.json"
     __objects = {}
@@ -42,7 +42,7 @@ class FileStorage:
     def new(self, obj):
         """Sets in __objects the obj with key <obj class name>.id."""
         if obj is not None:
-            key = obj.__class__.__name__ + "." + obj.id
+            key = f"{obj.__class__.__name__}.{obj.id}"
             self.__objects[key] = obj
 
     def save(self):
@@ -66,7 +66,7 @@ class FileStorage:
     def delete(self, obj=None):
         """Deletes obj from __objects if it’s inside."""
         if obj is not None:
-            key = obj.__class__.__name__ + '.' + obj.id
+            key = f"{obj.__class__.__name__}.{obj.id}"
             if key in self.__objects:
                 del self.__objects[key]
 
@@ -86,7 +86,7 @@ class FileStorage:
 
     def count(self, cls=None):
         """Count the number of objects in storage matching the given class."""
-        if not cls:
+        if cls is None:
             return len(self.all())
         if cls in classes.values():
             return len(self.all(cls))
