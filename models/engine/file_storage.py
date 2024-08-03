@@ -24,7 +24,7 @@ classes = {
 
 
 class FileStorage:
-    """Serializes instances to a JSON file and deserializes back to instances."""
+    """Serializes instances to a JSON file and deserializes back to instances."""  # naqo
 
     __file_path = "file.json"
     __objects = {}
