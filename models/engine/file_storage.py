@@ -76,12 +76,11 @@ def get(self, cls, id):
     if cls and id:
         if cls in classes.values():
             all_objects = self.all(cls)
-            
+
             for value in all_objects.values():
                 if value.id == id:
                     return value
     return None
-
 
     def count(self, cls=None):
         '''count:
