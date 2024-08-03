@@ -141,12 +141,12 @@ class TestFileStorage(unittest.TestCase):
         storage = FileStorage()
         storage.reload()
         state_data = {"name": "Dubai"}
-        State - State(**state_data)
+        State = State(**state_data)
         storage.new(state_instance)
 
         city_data = {"name": "Atlanta", "state_id": state_instance.id}
 
-        city_instance - City(**city_data)
+        city_instance = City(**city_data)
 
         storage.new(city_instance)
 
