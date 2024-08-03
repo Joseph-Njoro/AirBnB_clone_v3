@@ -38,10 +38,9 @@ class TestFileStorageDocs(unittest.TestCase):
                          "Found code style errors (and warnings).")
 
     def test_pep8_conformance_test_file_storage(self):
-        """Test tests/test_models/test_file_storage.py conforms to PEP8."""
+        """Test tests/test_models/test_engine/test_file_storage.py conforms to PEP8."""
         pep8s = pep8.StyleGuide(quiet=True)
-        result = pep8s.check_files(['tests/test_models/test_engine/\
-test_file_storage.py'])
+        result = pep8s.check_files(['tests/test_models/test_engine/test_file_storage.py'])
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
@@ -80,7 +79,7 @@ class TestFileStorage(unittest.TestCase):
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_new(self):
-        """test that new adds an object to the FileStorage.__objects attr"""
+        """Test that new adds an object to the FileStorage.__objects attr"""
         storage = FileStorage()
         save = FileStorage._FileStorage__objects
         FileStorage._FileStorage__objects = {}
@@ -114,46 +113,33 @@ class TestFileStorage(unittest.TestCase):
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
 
-    @unittest.skipIf(models.storage_t == 'db', "not testing db storage")
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_get(self):
-        """tests a method for obtaining an instance db storage"""
+        """tests a method for obtaining an instance from storage"""
         storage = FileStorage()
-
         storage.reload()
-
         state_data = {"name": "Singapore"}
-
         state_instance = State(**state_data)
         storage.new(state_instance)
         storage.save()
-
         retrieved_state = storage.get(State, state_instance.id)
-
         self.assertEqual(state_instance, retrieved_state)
-
         fake_state_id = storage.get(State, 'fake_id')
-
         self.assertEqual(fake_state_id, None)
 
-    @unittest.skipIf(models.storage_t == 'db', "not testing db storage")
-    def test_countw(self):
-        """tests a method for obtaining an instance db storage"""
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_count(self):
+        """tests the count method for storage"""
         storage = FileStorage()
         storage.reload()
         state_data = {"name": "Dubai"}
-        State = State(**state_data)
+        state_instance = State(**state_data)
         storage.new(state_instance)
-
         city_data = {"name": "Atlanta", "state_id": state_instance.id}
-
         city_instance = City(**city_data)
-
         storage.new(city_instance)
-
         storage.save()
-
-        state_occurence = storage.count(State)
-        self.assertEqual(state_occurence, len(storage.all(State)))
-
-        all_occurence = storage.count()
-        self.assertEqual(all_occurence, len(storage.all()))
+        state_occurrence = storage.count(State)
+        self.assertEqual(state_occurrence, len(storage.all(State)))
+        all_occurrence = storage.count()
+        self.assertEqual(all_occurrence, len(storage.all()))
