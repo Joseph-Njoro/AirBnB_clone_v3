@@ -71,16 +71,17 @@ class FileStorage:
 
     def get(self, cls, id):
         '''get:
-            Retrieve an object from the file storage by class and id.
-            '''
-        if cls and id:
-            if cls in classes.values():
-                all_objects = self.all(cls)
-
+        Retrieve an object from the file storage by class and id.
+    '''
+    if cls and id:
+        if cls in classes.values():
+            all_objects = self.all(cls)
+            
             for value in all_objects.values():
                 if value.id == id:
                     return value
     return None
+
 
     def count(self, cls=None):
         '''count:
