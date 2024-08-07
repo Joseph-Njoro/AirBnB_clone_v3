@@ -114,26 +114,43 @@ class TestFileStorage(unittest.TestCase):
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
 
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_get(self):
-        """Test that retrieve objects from file.json"""
-        state = State(name='Nairobi')
-        models.storage.new(state)
-        models.storage.save()
+        """Test for obtainning an instance of a db storage """
+        storage = FileStorage()
 
-        state_obj = models.storage.get(State, state.id)
+        storage.reload()
 
-        self.assertEqual(state, state_obj)
+        state_data = {"name": "canada"}
 
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+        state_instance = State(**state_data)
+        storage.new(state_instance)
+        storage.save()
+
+        retrived_state = storage.get(State, state_instance.id)
+        self.assertEqual(state_instance, retrived_state)
+
+        fake_state_id = storage.get(State, "fake_id")
+        self.assertEqual(fake_state_id, None)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_count(self):
-        """Test that counts objects from file.json"""
-        objs_from_all = len(models.storage.all())
-        objs_from_count = models.storage.count()
+        """Test for obtainning an instance of a db storage """
+        storage = FileStorage()
+        storage.reload()
+        state_data = {"name": "sudan"}
+        state_instance = State(**state_data)
+        storage.new(state_instance)
 
-        self.assertEqual(objs_from_all, objs_from_count)
+        city_data = {"name": "Rocky", "state_id": state_instance.id}
 
-        states_from_all = len(models.storage.all(State))
-        states_from_count = models.storage.count(State)
+        city_instance = City(**city_data)
 
-        self.assertEqual(states_from_all, states_from_count)
+        storage.new(city_instance)
+        storage.save()
+
+        state_occurence = storage.count(State)
+        self.assertEqual(state_occurence, len(storage.all(State)))
+
+        all_occurence = storage.count()
+        self.assertEqual(all_occurence, len(storage.all()))
